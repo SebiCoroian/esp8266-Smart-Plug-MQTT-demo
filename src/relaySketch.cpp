@@ -5,7 +5,7 @@ void setRelay(int relayNext)
 {
   if (relayNext == 0)
 	   turnOffRelay();
-  if (relayNex t== 1)
+  if (relayNext== 1)
 	   turnOnRelay();
   return;
 }
@@ -45,10 +45,10 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
 
   if (!strcmp(topic, name)) {
     Serial.println("got individual message");
-    setRelay(atoi(angle));
+    // setRelay(atoi(angle));
   } else if (!strcmp(topic, group)) {
     Serial.println("got message on group topic");
-    setRelay(atoi(angle));
+    // setRelay(atoi(angle));
   }
 }
 
