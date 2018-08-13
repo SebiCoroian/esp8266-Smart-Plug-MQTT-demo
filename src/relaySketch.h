@@ -2,10 +2,11 @@
 #include <ESP8266WiFi.h>
 #include <DNSServer.h>
 #include <ESP8266WebServer.h>
-#include <WiFiManager.h>
 #include <ArduinoJson.h>
+#include <WiFiManager.h>
 #include <PubSubClient.h>
 
+#define LED 2
 // Relay functions
 void turnOnRelay();
 void turnOffRelay();
