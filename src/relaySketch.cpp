@@ -13,16 +13,16 @@ void setRelay(int relayNext)
 // By aplying high voltage to the pin connected, the relay will relase AC
 void turnOnRelay()
 {
-  digitalWrite(relayPin, HIGH); // Turn on relay with voltage HIGH
+//  digitalWrite(relayPin, HIGH); // Turn on relay with voltage HIGH
   relayState = true;
-
+ digitalWrite(LED, LOW);
   Serial.print("Relay On");
 }
 
 void turnOffRelay() {
-  digitalWrite(relayPin, LOW);  // Turn off relay with voltage LOW
+  //digitalWrite(relayPin, LOW);  // Turn off relay with voltage LOW
   relayState = false;
-
+digitalWrite(LED, HIGH);
   Serial.print("Relay off");
 }
 
@@ -45,10 +45,10 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
 
   if (!strcmp(topic, name)) {
     Serial.println("got individual message");
-    // setRelay(atoi(angle));
+    setRelay(atoi(status));
   } else if (!strcmp(topic, group)) {
     Serial.println("got message on group topic");
-    // setRelay(atoi(angle));
+     setRelay(atoi(status));
   }
 }
 
@@ -88,6 +88,7 @@ void setup()
 	Serial.begin(115200);
   Serial.println();
 	pinMode(relayPin, OUTPUT);
+  pinMode(BUILTIN_LED, OUTPUT);
 
 	Serial.println("mounting FS...");
   // Reads the contents of config.json if exists and populates the global variables mentioned above
@@ -214,7 +215,7 @@ void setup()
   Serial.println(WiFi.localIP());
 
   // in the scope of this demo we will control the built in led on the boards.
-  pinMode(BUILTIN_LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
+  pinMode(LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
 
   // -- begin mqtt configuration --
   client.setServer(mqtt_server, atoi(mqtt_port)); // connect to host and port
