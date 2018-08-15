@@ -37,7 +37,8 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
   Serial.print(topic);
   Serial.print("] ");
   char status[3];
-  for (int i = 0; i < length; i++) {
+  for (int i = 0; i < length; i++)
+  {
     Serial.print((char)payload[i]);
     status[i] = (char)payload[i];
   }
@@ -55,18 +56,32 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
 // Method used to reconnect the mqtt client
 void reconnect() {
   // Loop until we're reconnected
-  while (!client.connected()) {
+  while (!client.connected())
+  {
+    Serial.println(name);
+
+    Serial.println(mqtt_server);
+
+    Serial.println(mqtt_port);
+
+    Serial.println(mqtt_user);
+
+    Serial.println(mqtt_pass);
+
     Serial.print("Attempting MQTT connection...");
 
     // Connect to mqtt server with user and password and pass the device ID,
     // Device ID should be unique on the bus so pay attention to this.
-    if (client.connect(device_uid.c_str(), mqtt_user, mqtt_pass)) {
+    if (client.connect(device_uid.c_str(), mqtt_user, mqtt_pass))
+    {
       Serial.println("connected");
 
       // Subscribe to what channels you want to listen to.
-      client.subscribe(group);
+      //client.subscribe(group);
       client.subscribe(name);
-    } else {
+    }
+    else
+    {
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
@@ -114,6 +129,7 @@ void setup()
           strcpy(mqtt_port, json["mqtt_port"]); // Populate mqtt_port from config
           strcpy(mqtt_user, json["mqtt_user"]); // Populate mqtt_user from config
           strcpy(mqtt_pass, json["mqtt_pass"]); // Populate mqtt_pass from config
+          strcpy(devkey, json["devkey"]);
           device_uid = json["device_uid"].asString(); // Populate device id from config
           strcpy(group, json["group"]);
           strcpy(name, json["name"]);
@@ -130,12 +146,13 @@ void setup()
   // -- Begin configuration of the portal --
 
   // Create custom parameters for the portal
-  WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
-  WiFiManagerParameter custom_mqtt_port("port", "mqtt port", mqtt_port, 6);
-  WiFiManagerParameter custom_mqtt_user("user", "mqtt user", mqtt_port, 30);
+ WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
+ WiFiManagerParameter custom_mqtt_port("port", "mqtt port", mqtt_port, 6);
+ WiFiManagerParameter custom_mqtt_user("user", "mqtt user", mqtt_port, 30);
   WiFiManagerParameter custom_mqtt_pass("pass", "mqtt password", mqtt_pass, 30);
-  WiFiManagerParameter custom_group("group", "gropup", group, 30);
+ WiFiManagerParameter custom_group("group", "gropup", group, 30);
   WiFiManagerParameter custom_name("name", "device name", name, 30);
+  WiFiManagerParameter custom_devkey("devkey", "user email", devkey, 30);
 
   // WiFiManager
   // Local intialization. Once its business is done, there is no need to keep it around
@@ -145,15 +162,16 @@ void setup()
   wifiManager.setSaveConfigCallback(saveConfigCallback);
 
   // add custom parameters to portal§
-  wifiManager.addParameter(&custom_mqtt_server);
-  wifiManager.addParameter(&custom_mqtt_port);
-  wifiManager.addParameter(&custom_mqtt_user);
-  wifiManager.addParameter(&custom_mqtt_pass);
+ wifiManager.addParameter(&custom_mqtt_server);
+ wifiManager.addParameter(&custom_mqtt_port);
+ wifiManager.addParameter(&custom_mqtt_user);
+ wifiManager.addParameter(&custom_mqtt_pass);
   wifiManager.addParameter(&custom_name);
-  wifiManager.addParameter(&custom_group);
+ wifiManager.addParameter(&custom_group);
+  wifiManager.addParameter(&custom_devkey);
 
   // reset portal settings. used for testing only. to force opening the portal on each boot.
-  // wifiManager.resetSettings();
+//  wifiManager.resetSettings();
 
   // if the board could not connect to wifi on the first boot.
   // an access point called Configure Device would be created
@@ -197,6 +215,7 @@ void setup()
     json["device_uid"] = device_uid.c_str();
     json["group"] = group;
     json["name"] = name;
+    json["devkey"] = devkey;
 
 
     File configFile = SPIFFS.open("/config.json", "w");
@@ -219,14 +238,17 @@ void setup()
 
   // -- begin mqtt configuration --
   client.setServer(mqtt_server, atoi(mqtt_port)); // connect to host and port
+
   client.setCallback(handleIncommingMessage); // set handler for incomming messages on subscribed channels
   // -- end mqtt configuration --
 }
 
 void loop()
 {
+  //SPIFFS.format();
   // As long as the mqtt client is not connected, reconnect.
   if (!client.connected()) {
+
       reconnect();
   }
   // On each iteration of loop, mqtt client would check the bus for new messages
