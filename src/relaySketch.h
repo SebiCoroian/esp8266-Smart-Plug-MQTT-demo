@@ -18,15 +18,15 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length);
 void reconnect();
 
 // Variables to store MQTT server credentials and a random generated device id
-char mqtt_server[30];
-char mqtt_port[6];
-char mqtt_user[30];
-char mqtt_pass[30];
-char group[30];
-char name[30];
-char devkey[30];
+// char mqtt_server[30];
+// char mqtt_port[6];
+// char mqtt_user[30];
+// char mqtt_pass[30];
+// char group[30];
+// char name[30];
+// char devkey[30];
 // Temporary device name until it gets a proper name from the server
-String device_uid = "device-" + String(random(0xffff), HEX);
+// String device_uid = "device-" + String(random(0xffff), HEX);
 
 // Instance of MQTT client
 WiFiClient espClient;

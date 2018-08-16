@@ -1,6 +1,6 @@
-#include "relaySketch.h"
-//communication
-int TG;
+//#include "relaySketch.h"
+#include "credentials.h"
+
 // Function for relay's next status after message recived
 void setRelay(int relayNext)
 {
@@ -14,14 +14,14 @@ void setRelay(int relayNext)
 // By aplying high voltage to the pin connected, the relay will relase AC
 void turnOnRelay()
 {
-//  digitalWrite(relayPin, HIGH); // Turn on relay with voltage HIGH
+  digitalWrite(relayPin, HIGH); // Turn on relay with voltage HIGH
   relayState = true;
- digitalWrite(LED, LOW);
+  digitalWrite(LED, LOW);
   Serial.print("Relay On");
 }
 
 void turnOffRelay() {
-  //digitalWrite(relayPin, LOW);  // Turn off relay with voltage LOW
+  digitalWrite(relayPin, LOW);  // Turn off relay with voltage LOW
   relayState = false;
 digitalWrite(LED, HIGH);
   Serial.print("Relay off");
@@ -126,10 +126,10 @@ void setup()
         if (json.success()) { // Check if conversion was successful
           Serial.println("\nparsed json");
 
-          strcpy(mqtt_server, json["mqtt_server"]); // Populate mqtt_server from config
-          strcpy(mqtt_port, json["mqtt_port"]); // Populate mqtt_port from config
-          strcpy(mqtt_user, json["mqtt_user"]); // Populate mqtt_user from config
-          strcpy(mqtt_pass, json["mqtt_pass"]); // Populate mqtt_pass from config
+          // strcpy(mqtt_server, json["mqtt_server"]); // Populate mqtt_server from config
+          // strcpy(mqtt_port, json["mqtt_port"]); // Populate mqtt_port from config
+          // strcpy(mqtt_user, json["mqtt_user"]); // Populate mqtt_user from config
+          // strcpy(mqtt_pass, json["mqtt_pass"]); // Populate mqtt_pass from config
           strcpy(devkey, json["devkey"]);
           device_uid = json["device_uid"].asString(); // Populate device id from config
           strcpy(group, json["group"]);
@@ -147,10 +147,10 @@ void setup()
   // -- Begin configuration of the portal --
 
   // Create custom parameters for the portal
- WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
- WiFiManagerParameter custom_mqtt_port("port", "mqtt port", mqtt_port, 6);
- WiFiManagerParameter custom_mqtt_user("user", "mqtt user", mqtt_port, 30);
-  WiFiManagerParameter custom_mqtt_pass("pass", "mqtt password", mqtt_pass, 30);
+ // WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
+ // WiFiManagerParameter custom_mqtt_port("port", "mqtt port", mqtt_port, 6);
+ // WiFiManagerParameter custom_mqtt_user("user", "mqtt user", mqtt_port, 30);
+ //  WiFiManagerParameter custom_mqtt_pass("pass", "mqtt password", mqtt_pass, 30);
  WiFiManagerParameter custom_group("group", "gropup", group, 30);
   WiFiManagerParameter custom_name("name", "device name", name, 30);
   WiFiManagerParameter custom_devkey("devkey", "user email", devkey, 30);
@@ -163,10 +163,10 @@ void setup()
   wifiManager.setSaveConfigCallback(saveConfigCallback);
 
   // add custom parameters to portal§
- wifiManager.addParameter(&custom_mqtt_server);
- wifiManager.addParameter(&custom_mqtt_port);
- wifiManager.addParameter(&custom_mqtt_user);
- wifiManager.addParameter(&custom_mqtt_pass);
+ // wifiManager.addParameter(&custom_mqtt_server);
+ // wifiManager.addParameter(&custom_mqtt_port);
+ // wifiManager.addParameter(&custom_mqtt_user);
+ // wifiManager.addParameter(&custom_mqtt_pass);
   wifiManager.addParameter(&custom_name);
  wifiManager.addParameter(&custom_group);
   wifiManager.addParameter(&custom_devkey);
@@ -181,7 +181,7 @@ void setup()
   // and the required credentials for mqtt.
   // this will run in a blocking loop so the boot process would stay here as long
   // as the board is not connected to wifi.
-  if (!wifiManager.autoConnect("Configure Device")) {
+  if (!wifiManager.autoConnect("it hurts when IP")) {
     Serial.println("failed to connect and hit timeout");
     delay(3000);
     //reset and try again, or maybe put it to deep sleep
@@ -198,10 +198,10 @@ void setup()
   if (shouldSaveConfig) {
 
     // populate mqtt_server, mqtt_port, mqtt_user, mqtt_pass with the information provided by the user.
-    strcpy(mqtt_server, custom_mqtt_server.getValue());
-    strcpy(mqtt_port, custom_mqtt_port.getValue());
-    strcpy(mqtt_user, custom_mqtt_user.getValue());
-    strcpy(mqtt_pass, custom_mqtt_pass.getValue());
+    // strcpy(mqtt_server, custom_mqtt_server.getValue());
+    // strcpy(mqtt_port, custom_mqtt_port.getValue());
+    // strcpy(mqtt_user, custom_mqtt_user.getValue());
+    // strcpy(mqtt_pass, custom_mqtt_pass.getValue());
     strcpy(group, custom_group.getValue());
     strcpy(name, custom_name.getValue());
 
@@ -238,7 +238,9 @@ void setup()
   pinMode(LED, OUTPUT);     // Initialize the BUILTIN_LED pin as an output
 
   // -- begin mqtt configuration --
-  client.setServer(mqtt_server, atoi(mqtt_port)); // connect to host and port
+  client.setServer(mqtt_server, mqtt_port); // connect to host and port
+  Serial.println(mqtt_server);
+  Serial.println(mqtt_port);
 
   client.setCallback(handleIncommingMessage); // set handler for incomming messages on subscribed channels
   // -- end mqtt configuration --
