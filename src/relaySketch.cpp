@@ -45,10 +45,10 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
   }
   Serial.println();
 
-  if (!strcmp(topic, name)) {
+  if (!strcmp(topic, "3")) {
     Serial.println("got individual message");
     setRelay(atoi(status));
-  } else if (!strcmp(topic, group)) {
+  } else if (!strcmp(topic, "3")) {
     Serial.println("got message on group topic");
      setRelay(atoi(status));
   }
@@ -151,8 +151,8 @@ void setup()
  // WiFiManagerParameter custom_mqtt_port("port", "mqtt port", mqtt_port, 6);
  // WiFiManagerParameter custom_mqtt_user("user", "mqtt user", mqtt_port, 30);
  //  WiFiManagerParameter custom_mqtt_pass("pass", "mqtt password", mqtt_pass, 30);
- WiFiManagerParameter custom_group("group", "gropup", group, 30);
-  WiFiManagerParameter custom_name("name", "device name", name, 30);
+ // WiFiManagerParameter custom_group("group", "gropup", group, 30);
+ //  WiFiManagerParameter custom_name("name", "device name", name, 30);
   WiFiManagerParameter custom_devkey("devkey", "user email", devkey, 30);
 
   // WiFiManager
@@ -167,12 +167,12 @@ void setup()
  // wifiManager.addParameter(&custom_mqtt_port);
  // wifiManager.addParameter(&custom_mqtt_user);
  // wifiManager.addParameter(&custom_mqtt_pass);
-  wifiManager.addParameter(&custom_name);
- wifiManager.addParameter(&custom_group);
+ //  wifiManager.addParameter(&custom_name);
+ // wifiManager.addParameter(&custom_group);
   wifiManager.addParameter(&custom_devkey);
 
   // reset portal settings. used for testing only. to force opening the portal on each boot.
-//  wifiManager.resetSettings();
+  wifiManager.resetSettings();
 
   // if the board could not connect to wifi on the first boot.
   // an access point called Configure Device would be created
@@ -202,8 +202,8 @@ void setup()
     // strcpy(mqtt_port, custom_mqtt_port.getValue());
     // strcpy(mqtt_user, custom_mqtt_user.getValue());
     // strcpy(mqtt_pass, custom_mqtt_pass.getValue());
-    strcpy(group, custom_group.getValue());
-    strcpy(name, custom_name.getValue());
+    // strcpy(group, custom_group.getValue());
+    // strcpy(name, custom_name.getValue());
 
     // -- begin conversion of parameters to json and save them to flash storage --
     Serial.println("saving config");
@@ -214,8 +214,8 @@ void setup()
     json["mqtt_user"] = mqtt_user;
     json["mqtt_pass"] = mqtt_pass;
     json["device_uid"] = device_uid.c_str();
-    json["group"] = group;
-    json["name"] = name;
+    json["group"] ="3";
+    json["name"] = "3";
     json["devkey"] = devkey;
 
 
