@@ -1,6 +1,6 @@
 #include "relaySketch.h"
-//bash test
-int Tomsa;
+//communication
+int TG;
 // Function for relay's next status after message recived
 void setRelay(int relayNext)
 {
