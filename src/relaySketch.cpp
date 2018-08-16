@@ -79,7 +79,7 @@ void reconnect() {
 
       // Subscribe to what channels you want to listen to.
       //client.subscribe(group);
-      client.subscribe(name);
+      client.subscribe("3");
     }
     else
     {
@@ -160,7 +160,7 @@ void setup()
   WiFiManager wifiManager;
 
   // set the callback used for notifying if there was a change
-  wifiManager.setSaveConfigCallback(saveConfigCallback);
+  //wifiManager.setSaveConfigCallback(saveConfigCallback);
 
   // add custom parameters to portal§
  // wifiManager.addParameter(&custom_mqtt_server);
