@@ -9,3 +9,8 @@ char name[30];
 char devkey[30];
 
 String device_uid = "device-" + String(random(0xffff), HEX);
+
+void toSubscribe(char topicName[])
+{
+client.subscribe("topicName");
+}
