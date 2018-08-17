@@ -10,7 +10,20 @@ char devkey[30];
 
 String device_uid = "device-" + String(random(0xffff), HEX);
 
-void toSubscribe(char topicName[])
-{
-client.subscribe("topicName");
-}
+// void subs(char topicList[])
+// {
+// if(topicList!="")
+// {
+// char aux[20];
+// int i=0;
+// while(topicList[i]!=" " || i==strlen(topicList))
+// {
+//   aux[i]=topicList[i];
+// }
+// client.subscribe("aux");
+//
+//
+// subs(topicList+i);
+//
+// }
+// }
