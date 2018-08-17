@@ -37,7 +37,7 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
-  char status[3];
+  char status[33];
   for (int i = 0; i < length; i++)
   {
     Serial.print((char)payload[i]);
@@ -47,7 +47,10 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
 
   if (!strcmp(topic, "3")) {
     Serial.println("got individual message");
-    setRelay(atoi(status));
+    if(strlen(status)>3)  ///
+    devID=status;         ///
+    else                ///
+    setRelay(atoi(status)); ///
   } else if (!strcmp(topic, "3")) {
     Serial.println("got message on group topic");
      setRelay(atoi(status));
@@ -93,9 +96,8 @@ void reconnect() {
   // Publish to the bus, a message used for auto discovery.
   Serial.println(("Device connected " + device_uid).c_str());
   client.publish("connected-device", name);
-  if (group) {
-    client.publish("connected-in-group", group);
-  }
+  client.publish("devkey: ", devkey);
+
 }
 
 void setup()
@@ -134,6 +136,8 @@ void setup()
           device_uid = json["device_uid"].asString(); // Populate device id from config
           strcpy(group, json["group"]);
           strcpy(name, json["name"]);
+          strcpy(devID, json["devID"]);
+
 
         } else { // Json conversion failed
           Serial.println("failed to load json config");
@@ -181,7 +185,7 @@ void setup()
   // and the required credentials for mqtt.
   // this will run in a blocking loop so the boot process would stay here as long
   // as the board is not connected to wifi.
-  if (!wifiManager.autoConnect("device-ap", "password")) {
+  if (!wifiManager.autoConnect("device-ap")) {
     Serial.println("failed to connect and hit timeout");
     delay(3000);
     //reset and try again, or maybe put it to deep sleep
@@ -213,13 +217,11 @@ void setup()
     json["mqtt_port"] = mqtt_port;
     json["mqtt_user"] = mqtt_user;
     json["mqtt_pass"] = mqtt_pass;
+    json["devID"] = devID;
     json["device_uid"] = device_uid.c_str();
     json["group"] ="3";
     json["name"] = "3";
     json["devkey"] = devkey;
-    client.publish(devkey, "");
-
-
 
 
     File configFile = SPIFFS.open("/config.json", "w");

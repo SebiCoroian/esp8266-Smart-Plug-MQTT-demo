@@ -7,6 +7,7 @@ char mqtt_pass[]="XzKi2HE7KyKt";
 char group[30];
 char name[30];
 char devkey[30];
+char devID[30];
 
 String device_uid = "device-" + String(random(0xffff), HEX);
 
