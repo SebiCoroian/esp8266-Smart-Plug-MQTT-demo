@@ -37,7 +37,7 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.print("] ");
-  char status[33];
+  char status[30];
   for (int i = 0; i < length; i++)
   {
     Serial.print((char)payload[i]);
@@ -47,13 +47,18 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
 
   if (!strcmp(topic, "3")) {
     Serial.println("got individual message");
-    if(strlen(status)>3)  ///
-    devID=status;         ///
-    else                ///
+
+      // devID=status;
+      // client.subscribe("devID");
+        ///
+                   ///
     setRelay(atoi(status)); ///
-  } else if (!strcmp(topic, "3")) {
-    Serial.println("got message on group topic");
-     setRelay(atoi(status));
+  } else if (strcmp(topic, "ID")) {
+    
+    strcpy(devID,status);
+    client.subscribe("devID");
+    Serial.println("New device ID");
+
   }
 }
 
@@ -83,6 +88,7 @@ void reconnect() {
       // Subscribe to what channels you want to listen to.
       //client.subscribe(group);
       client.subscribe("3");
+      client.subscribe("ID");
     }
     else
     {
