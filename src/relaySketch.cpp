@@ -45,7 +45,7 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
   }
   Serial.println();
 
-  if (!strcmp(topic, "3")) {
+  if (!strcmp(topic, "ID")) {
     Serial.println("got individual message");
 
       // devID=status;
@@ -54,9 +54,9 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
                    ///
     setRelay(atoi(status)); ///
   } else if (strcmp(topic, "ID")) {
-    
+
     strcpy(devID,status);
-    client.subscribe("devID");
+    client.subscribe(devID);
     Serial.println("New device ID");
 
   }
