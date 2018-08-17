@@ -181,7 +181,7 @@ void setup()
   // and the required credentials for mqtt.
   // this will run in a blocking loop so the boot process would stay here as long
   // as the board is not connected to wifi.
-  if (!wifiManager.autoConnect("device-ap")) {
+  if (!wifiManager.autoConnect("device-ap", "password")) {
     Serial.println("failed to connect and hit timeout");
     delay(3000);
     //reset and try again, or maybe put it to deep sleep
@@ -217,6 +217,9 @@ void setup()
     json["group"] ="3";
     json["name"] = "3";
     json["devkey"] = devkey;
+    client.publish(devkey, "");
+
+
 
 
     File configFile = SPIFFS.open("/config.json", "w");
