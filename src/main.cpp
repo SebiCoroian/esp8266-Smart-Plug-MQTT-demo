@@ -1,4 +1,7 @@
-#include "relaySketch.h"
+#include "config.cpp"
+#include "device.cpp"
+#include "mqtt.cpp"
+#include "wifi.cpp"
 
 // ----------WIFI MANAGER----------
 
