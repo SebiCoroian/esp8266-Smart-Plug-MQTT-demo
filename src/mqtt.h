@@ -9,7 +9,7 @@ char mqtt_user[]="dzdmwzut";
 char mqtt_pass[]="XzKi2HE7KyKt";
 
 // MQTT topics
-string topics[] = {"ID"};
+String topics[] = {"ID"};
 
 // MQTT client
 WiFiClient espClient;
