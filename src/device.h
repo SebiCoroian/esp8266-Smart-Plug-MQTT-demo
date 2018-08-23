@@ -7,5 +7,6 @@
 
 bool relayState = false;
 char device_id[30];
+String device_uid;
 
 void setRelayState(int relayState);

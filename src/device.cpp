@@ -16,3 +16,8 @@ void setRelayState(int relayState)
     }
     return;
 }
+
+void genDeviceUid()
+{
+    device_uid = String(random(0xffff), HEX);
+}
