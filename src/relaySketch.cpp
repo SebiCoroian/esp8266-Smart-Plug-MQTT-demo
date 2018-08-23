@@ -1,37 +1,51 @@
-//#include "relaySketch.h"
-#include "credentials.h"
+#include "relaySketch.h"
 
-// Function for relay's next status after message recived
+// ----------CONFIG----------
+
+
+
+// ----------CONFIG----------
+
+
+// ----------RELAY----------
+
+// 0 turns the relay off
+// 1 turns the relay on
+// use ON or OFF instead of an integer
 void setRelay(int relayNext)
 {
-  if (relayNext == 0)
-	   turnOffRelay();
-  if (relayNext== 1)
-	   turnOnRelay();
-  return;
+    if (relayNext == 0) {
+      digitalWrite(relayPin, HIGH); // Turn on relay with voltage HIGH
+      relayState = true;
+      digitalWrite(LED, LOW);
+      Serial.print("Relay On");
+    }
+    if (relayNext== 1) {
+      digitalWrite(relayPin, LOW);  // Turn off relay with voltage LOW
+      relayState = false;
+      digitalWrite(LED, HIGH);
+      Serial.print("Relay off");
+    }
+    return;
 }
 
-// By aplying high voltage to the pin connected, the relay will relase AC
-void turnOnRelay()
-{
-  digitalWrite(relayPin, HIGH); // Turn on relay with voltage HIGH
-  relayState = true;
-  digitalWrite(LED, LOW);
-  Serial.print("Relay On");
-}
+// ----------RELAY----------
 
-void turnOffRelay() {
-  digitalWrite(relayPin, LOW);  // Turn off relay with voltage LOW
-  relayState = false;
-digitalWrite(LED, HIGH);
-  Serial.print("Relay off");
-}
+
+
+// ----------WIFI MANAGER----------
 
 // Callback used by the wifi manager to announce that the config changed
 void saveConfigCallback () {
   Serial.println("Should save config");
   shouldSaveConfig = true;
 }
+
+// ----------WIFI MANAGER----------
+
+
+
+// ----------MQTT----------
 
 void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
@@ -62,6 +76,8 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
   }
 }
 
+// ----------MQTT----------
+
 // Method used to reconnect the mqtt client
 void reconnect() {
   // Loop until we're reconnected
@@ -84,9 +100,6 @@ void reconnect() {
     if (client.connect(device_uid.c_str(), mqtt_user, mqtt_pass))
     {
       Serial.println("connected");
-
-      // Subscribe to what channels you want to listen to.
-      //client.subscribe(group);
       client.subscribe("3");
       client.subscribe("ID");
     }
@@ -101,11 +114,13 @@ void reconnect() {
   }
   // Publish to the bus, a message used for auto discovery.
   Serial.println(("Device connected " + device_uid).c_str());
-  client.publish("connected-device", name);
-  client.publish("devkey: ", devkey);
-
+  // client.publish("connected-device", name);
+  // client.publish("devkey: ", devkey);
 }
 
+
+
+// ----------BOARD----------
 void setup()
 {
 	// Initialize serial communication
@@ -268,3 +283,5 @@ void loop()
   // On each iteration of loop, mqtt client would check the bus for new messages
   client.loop();
 }
+
+// ----------BOARD----------
