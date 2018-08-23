@@ -1,40 +1,5 @@
 #include "relaySketch.h"
 
-// ----------CONFIG----------
-
-void readBoardConfig() {
-
-}
-
-// ----------CONFIG----------
-
-
-// ----------RELAY----------
-
-// 0 turns the relay off
-// 1 turns the relay on
-// use ON or OFF instead of an integer
-void setRelay(int relayNext)
-{
-    if (relayNext == 0) {
-      digitalWrite(relayPin, HIGH); // Turn on relay with voltage HIGH
-      relayState = true;
-      digitalWrite(LED, LOW);
-      Serial.print("Relay On");
-    }
-    if (relayNext== 1) {
-      digitalWrite(relayPin, LOW);  // Turn off relay with voltage LOW
-      relayState = false;
-      digitalWrite(LED, HIGH);
-      Serial.print("Relay off");
-    }
-    return;
-}
-
-// ----------RELAY----------
-
-
-
 // ----------WIFI MANAGER----------
 
 // Callback used by the wifi manager to announce that the config changed
@@ -44,77 +9,6 @@ void saveConfigCallback () {
 }
 
 // ----------WIFI MANAGER----------
-
-
-
-// ----------MQTT----------
-
-void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  Serial.print("] ");
-  char status[30];
-  for (int i = 0; i < length; i++)
-  {
-    Serial.print((char)payload[i]);
-    status[i] = (char)payload[i];
-  }
-  Serial.println();
-
-  if (!strcmp(topic, "ID")) {
-    Serial.println("got individual message");
-
-    setRelay(atoi(status));
-  } else if (strcmp(topic, "ID")) {
-
-    strcpy(devID,status);
-    client.subscribe(devID);
-    Serial.println("New device ID");
-
-  }
-}
-
-// ----------MQTT----------
-
-// Method used to reconnect the mqtt client
-void reconnect() {
-  // Loop until we're reconnected
-  while (!client.connected())
-  {
-    Serial.println(name);
-
-    Serial.println(mqtt_server);
-
-    Serial.println(mqtt_port);
-
-    Serial.println(mqtt_user);
-
-    Serial.println(mqtt_pass);
-
-    Serial.print("Attempting MQTT connection...");
-
-    // Connect to mqtt server with user and password and pass the device ID,
-    // Device ID should be unique on the bus so pay attention to this.
-    if (client.connect(device_uid.c_str(), mqtt_user, mqtt_pass))
-    {
-      Serial.println("connected");
-      client.subscribe("3");
-      client.subscribe("ID");
-    }
-    else
-    {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
-      // Wait 5 seconds before retrying
-      delay(5000);
-    }
-  }
-  // Publish to the bus, a message used for auto discovery.
-  Serial.println(("Device connected " + device_uid).c_str());
-  // client.publish("connected-device", name);
-  // client.publish("devkey: ", devkey);
-}
 
 
 
