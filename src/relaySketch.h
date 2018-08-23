@@ -7,13 +7,18 @@
 #include <PubSubClient.h>
 
 #define LED 2
+#define ON 1
+#define OFF 0
+
 // Relay functions
 void turnOnRelay();
 void turnOffRelay();
-void sendRelayState();
-void setRelayS();
+void setRelay(int relayNext);
 
+// wifi manager functions
 void saveConfigCallback();
+
+// mqtt functions
 void handleIncommingMessage(char* topic, byte* payload, unsigned int length);
 void reconnect();
 
@@ -21,8 +26,6 @@ char mqtt_server[]="m20.cloudmqtt.com";
 unsigned int mqtt_port=18805;
 char mqtt_user[]="dzdmwzut";
 char mqtt_pass[]="XzKi2HE7KyKt";
-char group[30];
-char name[30];
 char devkey[30];
 char devID[30];
 

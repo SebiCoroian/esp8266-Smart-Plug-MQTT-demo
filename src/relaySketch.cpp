@@ -2,7 +2,9 @@
 
 // ----------CONFIG----------
 
+void readBoardConfig() {
 
+}
 
 // ----------CONFIG----------
 
@@ -62,11 +64,7 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
   if (!strcmp(topic, "ID")) {
     Serial.println("got individual message");
 
-      // devID=status;
-      // client.subscribe("devID");
-        ///
-                   ///
-    setRelay(atoi(status)); ///
+    setRelay(atoi(status));
   } else if (strcmp(topic, "ID")) {
 
     strcpy(devID,status);
