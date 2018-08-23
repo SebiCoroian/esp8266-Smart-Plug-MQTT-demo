@@ -8,5 +8,6 @@
 bool relayState = false;
 char device_id[30];
 String device_uid;
+char _email[30];
 
 void setRelayState(int relayState);
