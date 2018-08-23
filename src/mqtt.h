@@ -16,8 +16,10 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 // Incoming message callback
-void handleIncommingMessage(char* topic, byte* payload, unsigned int lenght);
+void mqtt_handleIncommingMessage(char* topic, byte* payload, unsigned int lenght);
 
-bool connect();
+bool mqtt_connect();
 
-void subscribe();
+void mqtt_subscribe();
+
+void mqtt_init();

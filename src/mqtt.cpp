@@ -1,6 +1,6 @@
 #include "mqtt.h"
 
-void handleIncommingMessage(char* topic, byte* payload, unsigned int lenght)
+void mqtt_handleIncommingMessage(char* topic, byte* payload, unsigned int lenght)
 {
     Serial.print("MQTT message arrived: [");
     Serial.print(topic);
@@ -15,7 +15,13 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int lenght)
     // handle the messages
 }
 
-bool connect(int& device_uid)
+void mqtt_init()
+{
+    client.setServer(mqtt_server, mqtt_port);
+    client.setCallback(handleIncommingMessage);
+}
+
+bool mqtt_connect(int& device_uid)
 {
     Serial.println("Attempting an MQTT connection.");
 
@@ -30,7 +36,7 @@ bool connect(int& device_uid)
     return false;
 }
 
-void subscribe()
+void mqtt_subscribe()
 {
     for (int i = 0; i < sizeof(topics); i++)
     {
