@@ -2,7 +2,7 @@
 
 void saveConfigCallback()
 {
-    Serial.print("Should save new config.")
+    Serial.print("Should save new config.");
     shouldSaveConfig = true;
 }
 
@@ -27,4 +27,10 @@ void apConfiguration()
         ESP.reset();
         delay(5000);
     }
+}
+
+void printLocalIp()
+{
+    Serial.print("Local IP: ");
+    Serial.print(WiFi.localIP());
 }

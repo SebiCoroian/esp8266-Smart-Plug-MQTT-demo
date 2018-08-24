@@ -12,3 +12,5 @@ String ap_pass;
 void shouldSaveConfig();
 
 void apConfiguration();
+
+void printLocalIp();
