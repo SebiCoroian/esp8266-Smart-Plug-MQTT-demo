@@ -18,7 +18,7 @@ void mqtt_handleIncommingMessage(char* topic, byte* payload, unsigned int lenght
 void mqtt_init()
 {
     client.setServer(mqtt_server, mqtt_port);
-    client.setCallback(handleIncommingMessage);
+    client.setCallback(mqtt_handleIncommingMessage);
 }
 
 bool mqtt_connect(int& device_uid)
@@ -28,7 +28,7 @@ bool mqtt_connect(int& device_uid)
     if (client.connect(device_uid.c_str(), mqtt_user, mqtt_pass))
     {
         Serial.println("Connected.");
-        subscribe()
+        mqtt_subscribe();
         return true;
     }
     Serial.print("Failed, result code:");
@@ -40,8 +40,18 @@ void mqtt_subscribe()
 {
     for (int i = 0; i < sizeof(topics); i++)
     {
-        client.subscribe(topics[i].c_str())
+        client.subscribe(topics[i].c_str());
         Serial.print("Subscribed to:");
         Serial.print(topics[i]);
     }
+}
+
+bool mqtt_isConnected()
+{
+    return client.connected();
+}
+
+void mqtt_loop()
+{
+    client.loop();
 }

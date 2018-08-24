@@ -23,3 +23,5 @@ bool mqtt_connect();
 void mqtt_subscribe();
 
 void mqtt_init();
+
+void mqtt_loop();
