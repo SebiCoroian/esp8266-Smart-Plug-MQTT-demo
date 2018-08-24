@@ -22,8 +22,8 @@ namespace device
     #define RELAY_PIN 5 // D1
 
     bool relayState = false;
-    char device_id[30];
-    String device_uid;
+    char id[30];
+    String uid;
     char _email[30];
 
     void setRelayState(bool state);
@@ -39,7 +39,7 @@ namespace mqtt
     char pass[] = "XzKi2HE7KyKt";
 
     // MQTT topics
-    String topics[] = {"ID"};
+    String topics[] = {"ID", "GROUP1", "GROUP2", "GROUP3"};
 
     // MQTT client
     WiFiClient espClient;
@@ -52,6 +52,7 @@ namespace mqtt
     void init();
     void loop();
     bool isConnected();
+    void publish(const char *topic, const char *payload);
 }
 
 namespace wifi

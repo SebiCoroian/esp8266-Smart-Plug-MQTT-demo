@@ -1,4 +1,4 @@
-#include "sketch.h"
+#include "main.h"
 
 
 bool config :: readConfig()
@@ -33,8 +33,8 @@ bool config :: readConfig()
                     Serial.println("\nParsed JSON.");
 
                     // strcpy(_email, json["email"]);
-                    device :: device_uid = json["device_uid"].asString();
-                    strcpy(device :: device_id, json["device_id"]);
+                    device :: uid = json["device_uid"].asString();
+                    strcpy(device :: id, json["device_id"]);
                     // parse relay state
                 }
                 else {
@@ -59,8 +59,8 @@ bool config :: writeConfig()
     JsonObject& json = jsonBuffer.createObject();
 
     // write relay state
-    json["device_id"] = device :: device_id;
-    json["device_uid"] = device :: device_uid.c_str();
+    json["device_id"] = device :: id;
+    json["device_uid"] = device :: uid.c_str();
     json["email"] = device :: _email;
 
     File configFile = SPIFFS.open("/config,json", "w");
@@ -96,7 +96,7 @@ void device :: setRelayState(bool state)
 
 void device :: genDeviceUid()
 {
-    device :: device_uid = "UID-" + String(random(0xffff), HEX);
+    device :: uid = "UID-" + String(random(0xffff), HEX);
 }
 
 
@@ -113,7 +113,15 @@ void mqtt :: handleIncommingMessage(char* topic, byte* payload, unsigned int len
     }
     Serial.print(_payload);
 
-    // handle the messages
+    // Save the proper device ID that the chip
+    // should listen to
+    if (strcmp(topic, device :: uid.c_str()))
+    {
+        strcpy(device :: id, _payload);
+        config :: writeConfig();
+        mqtt :: topics[0] = "ID" + device :: id;
+        config :: writeConfig();
+    }
 }
 
 void mqtt :: init()
@@ -126,7 +134,7 @@ bool mqtt :: connect()
 {
     Serial.println("Attempting an MQTT connection.");
 
-    if (client.connect(device :: device_uid.c_str(), mqtt :: user, mqtt :: pass))
+    if (client.connect(device :: uid.c_str(), mqtt :: user, mqtt :: pass))
     {
         Serial.println("Connected.");
         mqtt :: subscribe();
@@ -155,6 +163,11 @@ bool mqtt :: isConnected()
 void mqtt :: loop()
 {
     mqtt :: client.loop();
+}
+
+void mqtt :: publish(const char *topic, const char *payload)
+{
+    mqtt :: client.publish(topic, payload);
 }
 
 
@@ -220,6 +233,9 @@ void setup()
 
     if (wifi :: shouldSaveConfigFlag)
     {
+
+        mqtt :: publish("GET_FINAL_ID", device :: _email);
+
         if (config :: writeConfig())
         {
             Serial.println("Wrote config on chip storage.");
