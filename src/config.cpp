@@ -5,7 +5,7 @@ bool readConfig()
 {
     Serial.println("READING THE CONFIG FILE.");
 
-    Serial.println("Mounting file system.")
+    Serial.println("Mounting file system.");
 
     if (SPIFFS.begin())
     {
@@ -45,7 +45,7 @@ bool readConfig()
     }
     else
     {
-        Serial.println("Failed to mount file system")
+        Serial.println("Failed to mount file system");
         return false;
     }
 }
