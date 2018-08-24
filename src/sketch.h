@@ -47,7 +47,7 @@ namespace mqtt
 
     // Incoming message callback
     void handleIncommingMessage(char* topic, byte* payload, unsigned int lenght);
-    bool connect(int& _device_uid);
+    bool connect();
     void subscribe();
     void init();
     void loop();
@@ -56,14 +56,14 @@ namespace mqtt
 
 namespace wifi
 {
-  // TESTING ONLY
-  bool shouldResetSettings = false;
+    // TESTING ONLY
+    bool shouldResetSettings = false;
 
-  bool shouldSaveConfigFlag = false;
-  char ap_ssid[] = "TestSSID";
-  char ap_pass[] = "TestPASS";
+    bool shouldSaveConfigFlag = false;
+    char ap_ssid[] = "TestSSID";
+    char ap_pass[] = "TestPASS";
 
-  void shouldSaveConfig();
-  void apConfiguration();
-  void printLocalIp();
+    void shouldSaveConfigCallback();
+    void apConfiguration();
+    void printLocalIp();
 }
