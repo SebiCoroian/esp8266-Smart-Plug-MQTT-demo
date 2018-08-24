@@ -5,9 +5,9 @@
 // TESTING ONLY
 bool shouldResetSettings = false;
 
-bool shouldSaveConfig = false;
-String ap_ssid;
-String ap_pass;
+bool shouldSaveConfigFlag = false;
+char ap_ssid[] = "TestSSID";
+char ap_pass[] = "TestPASS";
 
 void shouldSaveConfig();
 

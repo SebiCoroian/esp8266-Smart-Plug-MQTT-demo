@@ -1,3 +1,4 @@
+#include <ESP8266WiFi.h>
 
 #define LED 2
 #define ON 1
@@ -7,7 +8,7 @@
 
 bool relayState = false;
 char device_id[30];
-string device_uid;
+String device_uid;
 char _email[30];
 
 void setRelayState(int relayState);

@@ -7,8 +7,10 @@
 void setup()
 {
     Serial.begin(115200);
-    pinmode(RELAY_PIN, OUTPUT);
-    pinmode(BUILTIN_LED, OUTPUT);
+    pinMode(RELAY_PIN, OUTPUT);
+    pinMode(BUILTIN_LED, OUTPUT);
+
+    genDeviceUid();
 
     if (readConfig())
     {
@@ -21,7 +23,7 @@ void setup()
 
     apConfiguration();
 
-    if (shouldSaveConfig)
+    if (shouldSaveConfigFlag)
     {
         if (writeConfig())
         {

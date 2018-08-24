@@ -25,7 +25,7 @@ bool mqtt_connect(int& device_uid)
 {
     Serial.println("Attempting an MQTT connection.");
 
-    if (client.connect(device_uid.c_str(), mqtt_user, mqtt_pass))
+    if (client.connect(0, mqtt_user, mqtt_pass))
     {
         Serial.println("Connected.");
         mqtt_subscribe();

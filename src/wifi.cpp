@@ -3,7 +3,7 @@
 void saveConfigCallback()
 {
     Serial.print("Should save new config.");
-    shouldSaveConfig = true;
+    shouldSaveConfigFlag = true;
 }
 
 void apConfiguration()
@@ -12,7 +12,7 @@ void apConfiguration()
 
     WiFiManager wifiManager;
 
-    wifiManager.setSaveConfigCallback(saveConfigCallback());
+    wifiManager.setSaveConfigCallback(saveConfigCallback);
 
     wifiManager.addParameter(&token);
 

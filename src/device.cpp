@@ -3,13 +3,13 @@
 void setRelayState(int relayState)
 {
     if (relayState == 0) {
-      digitalWrite(relayPin, HIGH);
+      digitalWrite(RELAY_PIN, HIGH);
       relayState = true;
       digitalWrite(LED, LOW);
       Serial.print("Relay ON.");
     }
     if (relayState == 1) {
-      digitalWrite(relayPin, LOW);
+      digitalWrite(RELAY_PIN, LOW);
       relayState = false;
       digitalWrite(LED, HIGH);
       Serial.print("Relay OFF.");
@@ -19,5 +19,5 @@ void setRelayState(int relayState)
 
 void genDeviceUid()
 {
-    device_uid = String(random(0xffff), HEX);
+    device_uid = "UID-" + String(random(0xffff), HEX);
 }

@@ -23,12 +23,12 @@ bool readConfig()
 
                 size_t size = configFile.size();
                 std :: unique_ptr<char[]> buffer(new char[size]);
-                configFile.readBytes(bug.get(), size);
+                configFile.readBytes(buffer.get(), size);
 
                 DynamicJsonBuffer jsonBuffer;
                 JsonObject& json = jsonBuffer.parseObject(buffer.get());
 
-                if (json.succes())
+                if (json.success())
                 {
                     Serial.println("\nParsed JSON.");
 
@@ -48,6 +48,7 @@ bool readConfig()
         Serial.println("Failed to mount file system");
         return false;
     }
+    return true;
 }
 
 bool writeConfig()
@@ -71,4 +72,5 @@ bool writeConfig()
 
     json.printTo(configFile);
     configFile.close();
+    return true;
 }
