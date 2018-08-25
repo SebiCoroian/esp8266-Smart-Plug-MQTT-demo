@@ -119,7 +119,7 @@ void mqtt :: handleIncommingMessage(char* topic, byte* payload, unsigned int len
     {
         strcpy(device :: id, _payload);
         config :: writeConfig();
-        mqtt :: topics[0] = "ID" + device :: id;
+        mqtt :: topics[0] = strcat("ID", device :: id);
         config :: writeConfig();
         ESP.reset();
     }
