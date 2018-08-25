@@ -121,6 +121,7 @@ void mqtt :: handleIncommingMessage(char* topic, byte* payload, unsigned int len
         config :: writeConfig();
         mqtt :: topics[0] = "ID" + device :: id;
         config :: writeConfig();
+        ESP.reset();
     }
 }
 
