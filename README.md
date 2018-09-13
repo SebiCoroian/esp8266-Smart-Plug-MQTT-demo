@@ -1,10 +1,10 @@
 # esp8266-Smart-Plug-MQTT-demo
 Just an Arduino code that controls a smart plug wireless, via esp8266 module using MQTT technology
 
-# For this particular smart-plug I have followed the sketch below, affiliated to this particular project https://medium.com/@monkeytypewritr/amazon-echo-esp8266-iot-a42076daafa5
-![sketch](https://cdn-images-1.medium.com/max/1000/1*naLf9QOR8JYPTNeFEaywYg.png)
+# For this particular smart-plug I have followed the sketch below
+
+![sketch](https://github.com/SebiCoroian/esp8266-Smart-Plug-MQTT-demo/blob/master/SmartPlug.png)
 #
-# The only difference is that instead of Amazon Alexa, the wireless communication is realised via an MQTT server
 #
 # The device will create an access point. Once you connect, you'll have to introduce the MQTT credentials. A unique ID is automatically created for each plug
 # You can control one plug at a time or a group of plugs
