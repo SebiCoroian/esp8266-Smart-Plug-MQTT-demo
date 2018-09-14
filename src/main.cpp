@@ -118,7 +118,7 @@ void mqtt :: handleIncommingMessage(char* topic, byte* payload, unsigned int len
 
     // Save the proper device ID that the chip
     // should listen to
-    if (strcmp(topic, device :: uid.c_str()))
+    if (strcmp(topic, "id")
     {
         strcpy(device :: id, _payload);
 //         config :: writeConfig();
