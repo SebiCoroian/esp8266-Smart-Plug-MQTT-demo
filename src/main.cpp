@@ -36,7 +36,7 @@ bool config :: readConfig()
                     device :: uid = json["device_uid"].asString();
                     strcpy(device :: id, json["device_id"]);
 //                     see howw to write arrays in json
-                    mqtt :: topics = json["topics"];
+                    // mqtt :: topics = json["topics"];
                     // parse relay state
                 }
                 else {
@@ -64,7 +64,7 @@ bool config :: writeConfig()
     json["device_id"] = device :: id;
     json["device_uid"] = device :: uid.c_str();
     json["email"] = device :: _email;
-    json["topics"] == mqtt :: topics;
+    // json["topics"] == mqtt :: topics;
 
     File configFile = SPIFFS.open("/config,json", "w");
 
@@ -118,13 +118,25 @@ void mqtt :: handleIncommingMessage(char* topic, byte* payload, unsigned int len
 
     // Save the proper device ID that the chip
     // should listen to
-    if (strcmp(topic, "id")
+    if (strcmp(topic, "id"))
     {
         strcpy(device :: id, _payload);
 //         config :: writeConfig();
         mqtt :: topics[0] = strcat("ID", device :: id);
         config :: writeConfig();
         ESP.reset();
+    }
+
+    if (strcmp(topic, "ID1"))
+    {
+        if (strcmp("0", _payload))
+        {
+            device :: setRelayState(false);
+        }
+        else
+        {
+            device :: setRelayState(true);
+        }
     }
 }
 
@@ -237,7 +249,7 @@ void setup()
 
     if (wifi :: shouldSaveConfigFlag)
     {
-
+        config :: writeConfig();
         mqtt :: publish("GET_FINAL_ID", device :: _email);
 
         if (config :: writeConfig())

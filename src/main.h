@@ -39,7 +39,7 @@ namespace mqtt
     char pass[] = "XzKi2HE7KyKt";
 
     // MQTT topics
-    String topics[] = {"ID", "GROUP1", "GROUP2", "GROUP3"};
+    String topics[] = {"ID1", "GROUP1", "GROUP2", "GROUP3"};
 
     // MQTT client
     WiFiClient espClient;
