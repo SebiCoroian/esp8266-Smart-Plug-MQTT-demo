@@ -45,7 +45,7 @@ void handleIncommingMessage(char* topic, byte* payload, unsigned int length) {
   }
   Serial.println();
 
-  if (!strcmp(topic, "ID")) {
+  if (!strcmp(topic, "ID1")) {
     Serial.println("got individual message");
 
       // devID=status;
@@ -88,7 +88,7 @@ void reconnect() {
       // Subscribe to what channels you want to listen to.
       //client.subscribe(group);
       client.subscribe("3");
-      client.subscribe("ID");
+      client.subscribe("ID1");
     }
     else
     {
@@ -182,7 +182,7 @@ void setup()
   wifiManager.addParameter(&custom_devkey);
 
   // reset portal settings. used for testing only. to force opening the portal on each boot.
-  wifiManager.resetSettings();
+  // wifiManager.resetSettings();
 
   // if the board could not connect to wifi on the first boot.
   // an access point called Configure Device would be created
@@ -191,7 +191,7 @@ void setup()
   // and the required credentials for mqtt.
   // this will run in a blocking loop so the boot process would stay here as long
   // as the board is not connected to wifi.
-  if (!wifiManager.autoConnect("device-ap")) {
+  if (!wifiManager.autoConnect("TestSSID", "TestPASS")) {
     Serial.println("failed to connect and hit timeout");
     delay(3000);
     //reset and try again, or maybe put it to deep sleep
